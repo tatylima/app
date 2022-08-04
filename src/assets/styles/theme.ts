@@ -6,6 +6,6 @@ const theme = {
     colors,
     constants,
     mixins,
-} as const;
+} as const;//(as)estou dando um apelido para theme, com o nome const//
 
 export default theme;
