@@ -1,8 +1,11 @@
+import Menu from "components/Menu";
 import * as S from "./style"; //importando as configuraçoes, apelidando com "S",informando que esta no arquivo Syle.ts//
 import { ReactComponent as Search } from "assets/icons/search.svg";
+
 const Home = () => {
   return (
     <S.Home>
+      <Menu />
       <S.HomeContent>
         <header>
           <S.HomeHeaderDetails>
@@ -27,6 +30,9 @@ const Home = () => {
           </S.HomeProductList>
         </div>
       </S.HomeContent>
+      <aside>
+        <p>Detalhes dos pedidos aqui</p>
+      </aside>
     </S.Home>
   );
 };
