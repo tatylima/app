@@ -5,6 +5,7 @@ import * as S from "./style";
 import { RoutePath } from "types/routes";
 import { navigationItems } from "data/navigation";
 import ProductItemList from "components/ProductItemList";
+import ProductItem from "components/ProductItem";
 
 const Home = () => {
   const dateDescription = DateTime.now().toLocaleString({
@@ -43,8 +44,10 @@ const Home = () => {
         <p>Detalhes dos pedidos aqui</p>
       </aside>
       <S.HomeProductList>
-        <ProductItemList></ProductItemList>
-      </S.HomeProductList>
+  <ProductItemList>
+  	<ProductItem />
+  </ProductItemList>
+</S.HomeProductList>
     </S.Home>
   );
 };
