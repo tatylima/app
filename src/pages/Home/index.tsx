@@ -6,6 +6,7 @@ import { RoutePath } from "types/routes";
 import { navigationItems } from "data/navigation";
 import ProductItemList from "components/ProductItemList";
 import ProductItem from "components/ProductItem";
+import OrderDetails from "components/OrderDetails";
 
 const Home = () => {
   const dateDescription = DateTime.now().toLocaleString({
@@ -42,6 +43,7 @@ const Home = () => {
       </S.HomeContent>
       <aside>
         <p>Detalhes dos pedidos aqui</p>
+        <OrderDetails />
       </aside>
       <S.HomeProductList>
   <ProductItemList>
