@@ -7,6 +7,9 @@ import { navigationItems } from "data/navigation";
 import ProductItemList from "components/ProductItemList";
 import ProductItem from "components/ProductItem";
 import OrderDetails from "components/OrderDetails";
+import Overlay from "components/Overlay";
+import CheckoutSection from "components/CheckoutSection";
+
 
 const Home = () => {
   const dateDescription = DateTime.now().toLocaleString({
@@ -35,21 +38,20 @@ const Home = () => {
         <div>
           <S.HomeProductTitle>
             <b>Jogos</b>
-          </S.HomeProductTitle>
+            </S.HomeProductTitle>
           <S.HomeProductList>
-            <p>Lista de produtos aqui</p>
+            <ProductItemList>
+              <ProductItem />
+            </ProductItemList>
           </S.HomeProductList>
         </div>
       </S.HomeContent>
       <aside>
-        <p>Detalhes dos pedidos aqui</p>
         <OrderDetails />
       </aside>
-      <S.HomeProductList>
-  <ProductItemList>
-  	<ProductItem />
-  </ProductItemList>
-</S.HomeProductList>
+      <Overlay>
+      <CheckoutSection />
+      </Overlay>
     </S.Home>
   );
 };
