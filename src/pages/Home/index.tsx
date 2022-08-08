@@ -9,51 +9,53 @@ import ProductItem from "components/ProductItem";
 import OrderDetails from "components/OrderDetails";
 import Overlay from "components/Overlay";
 import CheckoutSection from "components/CheckoutSection";
-
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const dateDescription = DateTime.now().toLocaleString({
-    ...DateTime.DATE_SHORT,
-    weekday: "long",
-  });
-  return (
-    <S.Home>
-      <Menu active={RoutePath.HOME} navItems={navigationItems} />
-      <S.HomeContent>
-        <header>
-          <S.HomeHeaderDetails>
-            <div>
-              <S.HomeHeaderDetailsLogo>Xbox Live</S.HomeHeaderDetailsLogo>
-              <S.HomeHeaderDetailsDate>
-                {dateDescription}
-              </S.HomeHeaderDetailsDate>
-              <S.HomeHeaderDetailsDate></S.HomeHeaderDetailsDate>
-            </div>
-            <S.HomeHeaderDetailsSearch>
-              <Search />
-              <input type="text" placeholder="Procure pelo jogo" />
-            </S.HomeHeaderDetailsSearch>
-          </S.HomeHeaderDetails>
-        </header>
-        <div>
-          <S.HomeProductTitle>
-            <b>Jogos</b>
-            </S.HomeProductTitle>
-          <S.HomeProductList>
-            <ProductItemList>
-              <ProductItem />
-            </ProductItemList>
-          </S.HomeProductList>
-        </div>
-      </S.HomeContent>
-      <aside>
-        <OrderDetails />
-      </aside>
-      <Overlay>
-      <CheckoutSection />
-      </Overlay>
-    </S.Home>
-  );
-};
+    const dateDescription = DateTime.now().toLocaleString({...DateTime.DATE_SHORT, weekday: 'long'});
+    const navigate = useNavigate();
+    const handleNavigation = (path: RoutePath) => navigate(path);
+
+    return (
+        <S.Home>
+            <Menu 
+                active={RoutePath.HOME}
+                navItems={navigationItems}
+                onNavigate={handleNavigation}
+                onLogout={() => navigate(RoutePath.LOGIN)}
+            />
+            <S.HomeContent>
+                <header>
+                    <S.HomeHeaderDetails>
+                        <div>
+                            <S.HomeHeaderDetailsLogo>Xbox Live</S.HomeHeaderDetailsLogo>
+                            <S.HomeHeaderDetailsDate>{dateDescription}</S.HomeHeaderDetailsDate>
+                        </div>
+                        <S.HomeHeaderDetailsSearch>
+                            <Search />
+                            <input type="text" placeholder="Procure pelo jogo"/>
+                        </S.HomeHeaderDetailsSearch>
+                    </S.HomeHeaderDetails>
+                </header>
+                <div>
+                    <S.HomeProductTitle>
+                        <b>Jogos</b>
+                    </S.HomeProductTitle>
+                    <S.HomeProductList>
+                        <ProductItemList>
+                            <ProductItem />
+                        </ProductItemList>
+                    </S.HomeProductList>
+                </div>
+            </S.HomeContent>
+            <aside>
+                <OrderDetails />
+            </aside>
+            {/* <Overlay>
+                <CheckoutSection />
+            </Overlay> */}
+        </S.Home>
+    );
+}
 
 export default Home;
