@@ -10,7 +10,7 @@ type ManageGamesProps = {} & ManageGamesType;
 const ManageGames = ({ ...props }: ManageGamesProps) => {
   return (
     <S.ManageGames {...props}>
-      <S.ManageGamesTitle>Gerenciar Mesas</S.ManageGamesTitle>
+      <S.ManageGamesTitle>Gerenciar Games</S.ManageGamesTitle>
       <S.ManageGamesSub>
         <b>Jogos</b>
       </S.ManageGamesSub>
@@ -20,8 +20,8 @@ const ManageGames = ({ ...props }: ManageGamesProps) => {
           <span>Adicionar Jogo</span>
         </S.ManageGamesContentAdd>
         <S.ManageGamesContentAdd>
-          <label htmlFor="tableId">Número do Jogo</label>
-          <S.EditForm id="tableId" type="number" placeholder="01" />
+          <label htmlFor="gameId">Número do Jogo</label>
+          <S.EditForm id="gameId" type="number" placeholder="01" />
         </S.ManageGamesContentAdd>
         <EditGame />
       </S.ManageGamesContent>

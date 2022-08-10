@@ -1,4 +1,4 @@
-import logo from 'assets/imgs/logo.png';
+import logo from 'assets/imgs/avatares.png';
 import ButtonLarge from 'components/ButtonLarge';
 import { HTMLAttributes, useState } from 'react';
 import * as S from "./style";

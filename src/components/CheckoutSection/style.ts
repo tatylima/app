@@ -179,7 +179,7 @@ export const PaymentActionsDetailsOrderType = styled.div`
   `}
 `;
 
-export const PaymentActionsDetailsTableNumber = styled.div`
+export const PaymentActionsDetailsGameNumber = styled.div`
   ${({ theme }) => css`
     width: 50%;
     display: flex;

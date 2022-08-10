@@ -10,52 +10,111 @@ import OrderDetails from "components/OrderDetails";
 import Overlay from "components/Overlay";
 import CheckoutSection from "components/CheckoutSection";
 import { useNavigate } from "react-router-dom";
+import { products } from "mocks/products";
+import { ProductResponse } from "types/Product";
+import { OrderType } from "types/orderType";
+import { useState } from "react";
+import { OrderItemType } from "types/OrderItemType";
 
 const Home = () => {
-    const dateDescription = DateTime.now().toLocaleString({...DateTime.DATE_SHORT, weekday: 'long'});
-    const navigate = useNavigate();
-    const handleNavigation = (path: RoutePath) => navigate(path);
+  const dateDescription = DateTime.now().toLocaleString({
+    ...DateTime.DATE_SHORT,
+    weekday: "long",
+  });
 
-    return (
-        <S.Home>
-            <Menu 
-                active={RoutePath.HOME}
-                navItems={navigationItems}
-                onNavigate={handleNavigation}
-                onLogout={() => navigate(RoutePath.LOGIN)}
-            />
-            <S.HomeContent>
-                <header>
-                    <S.HomeHeaderDetails>
-                        <div>
-                            <S.HomeHeaderDetailsLogo>Xbox Live</S.HomeHeaderDetailsLogo>
-                            <S.HomeHeaderDetailsDate>{dateDescription}</S.HomeHeaderDetailsDate>
-                        </div>
-                        <S.HomeHeaderDetailsSearch>
-                            <Search />
-                            <input type="text" placeholder="Procure pelo jogo"/>
-                        </S.HomeHeaderDetailsSearch>
-                    </S.HomeHeaderDetails>
-                </header>
-                <div>
-                    <S.HomeProductTitle>
-                        <b>Jogos</b>
-                    </S.HomeProductTitle>
-                    <S.HomeProductList>
-                        <ProductItemList>
-                            <ProductItem />
-                        </ProductItemList>
-                    </S.HomeProductList>
-                </div>
-            </S.HomeContent>
-            <aside>
-                <OrderDetails />
-            </aside>
-            {/* <Overlay>
-                <CheckoutSection />
-            </Overlay> */}
-        </S.Home>
-    );
-}
+  const navigate = useNavigate();
+
+  const [activeOrderType, setActiverOrderType] = useState(OrderType.COMPRAR);
+
+  const [orders, setOrders] = useState<OrderItemType[]>([]);
+  const [selectedGame, setSelectedGame] = useState<number | undefined>();
+  const [proceedToPayment, setProceedToPayment] = useState<boolean>(false);
+
+
+  const handleNavigation = (path: RoutePath) => navigate(path);
+
+  const handleSelection = (product: ProductResponse) => {
+    const existing = orders.find((i) => i.product.id === product.id);
+    const quantity = existing ? existing.quantity + 1 : 1;
+    const item: OrderItemType = { product, quantity };
+
+    const list = existing
+      ? orders.map((i) => (i.product.id === existing.product.id ? item : i))
+      : [...orders, item];
+    setOrders(list);
+  };
+
+  const handleRemoveOrderItem = (id: string) => {
+    const filtered = orders.filter((i) => i.product.id != id);
+    setOrders(filtered);
+  };
+
+  return (
+    <S.Home>
+      <Menu
+        active={RoutePath.HOME}
+        navItems={navigationItems}
+        onNavigate={handleNavigation}
+        onLogout={() => navigate(RoutePath.LOGIN)}
+      />
+      <S.HomeContent>
+        <header>
+          <S.HomeHeaderDetails>
+            <div>
+              <S.HomeHeaderDetailsLogo>Xbox Live</S.HomeHeaderDetailsLogo>
+              <S.HomeHeaderDetailsDate>
+                {dateDescription}
+              </S.HomeHeaderDetailsDate>
+            </div>
+            <S.HomeHeaderDetailsSearch>
+              <Search />
+              <input type="text" placeholder="Procure pelo Jogo" />
+            </S.HomeHeaderDetailsSearch>
+          </S.HomeHeaderDetails>
+        </header>
+        <div>
+          <S.HomeProductTitle>
+            <b>Xbox Live</b>
+          </S.HomeProductTitle>
+          <S.HomeProductList>
+          <ProductItemList onSelectGame={setSelectedGame}>
+              {Boolean(products.length) &&
+                products.map((product, index) => (
+                  <ProductItem
+                    product={product}
+                    key={`ProductItem-${index}`}
+                    onSelect={handleSelection}
+                  />
+                ))}
+            </ProductItemList>
+          </S.HomeProductList>
+        </div>
+      </S.HomeContent>
+      <aside>
+        <OrderDetails
+          orders={orders}
+          onProceedToPayment={() => setProceedToPayment(true)}
+          onOrdersChange={(data) => setOrders(data)}
+          onChangeActiveOrderType={(data) => setActiverOrderType(data)}
+          activeOrderType={activeOrderType}
+          onRemoveItem={handleRemoveOrderItem}
+          selectedGame={selectedGame}
+        />
+      </aside>
+      {proceedToPayment && (
+        <Overlay>
+          <CheckoutSection
+            orders={orders}
+            onOrdersChange={(data) => setOrders(data)}
+            onChangeActiveOrderType={(data) => setActiverOrderType(data)}
+            activeOrderType={activeOrderType}
+            onCloseSection={() => setProceedToPayment(false)}
+            selectedGame={selectedGame}
+          />
+        </Overlay>
+      )}
+    </S.Home>
+  );
+};
 
 export default Home;

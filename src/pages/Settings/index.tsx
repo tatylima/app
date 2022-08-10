@@ -2,13 +2,18 @@ import Menu from "components/Menu";
 import { RoutePath } from "types/routes";
 import {navigationItems} from "data/navigation";
 import * as S from "./style";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet,useLocation, useNavigate } from "react-router-dom";
 import NavColumn from "components/NavColumn";
 
 
 const Settings = () => {
     const navigate = useNavigate();
     const handleNavigation = (path: RoutePath) => navigate(path);
+    const { pathname } = useLocation();
+
+    const splitterPath = (path: string) => path.split("/").pop() as RoutePath;
+    const path = splitterPath(pathname);
+
     
     return (
         <S.Settings>
@@ -24,17 +29,21 @@ const Settings = () => {
                 </header>
                 <S.SettingsContent>
                     <S.SettingsContentSidebar>
-                        {/* Trecho precisa ser alterado posteriormente */}
-                        <NavColumn activeRoute={RoutePath.SETTINGS_GAMES}/>
+                        <NavColumn activeRoute={path} />
                     </S.SettingsContentSidebar>
                     <S.SettingsContentBox>
-                        <S.SettingsContentBoxEmpty>Selecione uma categoria</S.SettingsContentBoxEmpty>
-                        <Outlet />
-                    </S.SettingsContentBox>
-                </S.SettingsContent>
-            </S.SettingsPage>
-        </S.Settings>
-    );
-}
-
-export default Settings;
+                    {path === splitterPath(RoutePath.SETTINGS) ? (
+                       <S.SettingsContentBoxEmpty>
+                       Selecione uma categoria
+                     </S.SettingsContentBoxEmpty>
+                   ) : (
+                     <Outlet />
+                   )}
+                 </S.SettingsContentBox>
+               </S.SettingsContent>
+             </S.SettingsPage>
+           </S.Settings>
+         );
+       };
+       
+       export default Settings;
